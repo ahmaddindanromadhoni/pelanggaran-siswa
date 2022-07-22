@@ -209,7 +209,7 @@ $a = mysqli_fetch_array($admin);
                                             <td>
                                                 <a href="nis/laporanxiirpl1.php?nis=<?= $d['nis']; ?>" target="_blank" class="btn btn-sm btn-warning"><i class="fas fa-print"></i></a>
                                                 <!-- hapus -->
-                                                <a href="proses/hapus_peringatan.php?no=<?= $d['no_peringatan'];?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                <a href="proses/hapus_peringatan.php?no=<?= $d['nis'];?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
                                                 <a href="" class="btn btn-success btn-sm"><i class="fas fa-user-edit"></i></a>
                                             </td>
                                         </tr>
