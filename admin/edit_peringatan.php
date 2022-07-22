@@ -25,8 +25,6 @@ $a = mysqli_fetch_array($admin);
 
     <!-- Custom styles for this template-->
     <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
-    <!-- Custom styles for this page -->
-    <link href="../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -144,88 +142,35 @@ $a = mysqli_fetch_array($admin);
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Data Pelanggaran Kelas XII RPL 1</h1>
-                    <p class="mb-4">Data Pelanggaran SMK Hasan Kafrawi Mayong Jepara.</p>
-                       
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                        <form method="get" name="laporan" enctype="multipart/form-data" onSubmit="return valid();">
-                            <div class="row">
-                            <div class="col-sm-3 mt-2">
-                                <div class="form-grup">
-                                <input type="date" name="awal" class="form-control" required>
-                                </div>
-                            </div>
-                                <div class="col-sm-3 mt-2">
-                                <div class="form-grup">
-                                <input type="date" name="akhir" class="form-control" required>
-                                </div>
-                                </div>
-                                <div class="col-sm-3 mt-2">
-                                    <div class="form-grup">
-                                <input type="submit" name="submit" class="btn btn-primary" value="Lihat Laporan">
-                                </div>
-                                </div>
-                            </div>
-                            </form>
-                            </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th width="1%">No</th>
-                                            <th>NIS</th>
-                                            <th>Nama</th>
-                                            <th>Nama Orangtua</th>
-                                            <th>Kelas</th>
-                                            <th>Tanggal</th>
-                                            <th>Pelanggaran</th>
-                                            <th width="13%">Opsi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                            $no = 1;
-                                            if(isset($_GET['submit'])){
-                                                $mulai 	 = $_GET['awal'];
-                                                $selesai = $_GET['akhir'];
-                                                $kelas = mysqli_query($koneksi, "SELECT * FROM pelanggaran WHERE nama_kelas = 'XII-RPL-I' AND tanggal BETWEEN '".$mulai."' AND '".$selesai."' ORDER BY tanggal DESC");
-                                            } else {
-                                                $kelas = mysqli_query($koneksi, "SELECT * FROM pelanggaran WHERE nama_kelas = 'XII-RPL-I'");
-                                            }
-                                                while($d = mysqli_fetch_array($kelas)){
-                                        ?>
-                                        <tr>
-                                            <td><?= $no++; ?></td>
-                                            <td><?= $d['nis'];?></td>
-                                            <td><?= $d['nama_user'];?></td>
-                                            <td><?= $d['nama_wali'];?></td>
-                                            <td><?= $d['nama_kelas'];?></td>
-                                            <td><?= $d['tanggal'];?></td>
-                                            <td><?= $d['pelanggaran'];?></td>
-                                            <td>
-                                                <a href="nis/laporanxiirpl1.php?nis=<?= $d['nis']; ?>" target="_blank" class="btn btn-sm btn-warning"><i class="fas fa-print"></i></a>
-                                                <a href="proses/hapus_peringatan.php?no_peringatan=<?= $d['no_peringatan'];?>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
-                                                <a href="" class="btn btn-success btn-sm"><i class="fas fa-user-edit"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                                <div class="form-group">
-                                <a href="print/laporanxiirpl1.php?awal=<?php echo $mulai;?>&akhir=<?php echo $selesai;?>" target="_blank" class="btn btn-primary btn-icon-split">
-                                        <span class="icon text-white-50">
-                                        <i class="fas fa-print"></i>
-                                        </span>
-                                        <span class="text">Print</span>
-                                    </a>
-							</div>
-                            </div>
-                        </div>
+                <div class="card shadow mb-4 col-lg-6">
+                    <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tambah Data</h6>
                     </div>
+                    <div class="card-body">
+                        <?php
+                        $no_kelas = $_GET['no_kelas'];
+                        $kelas = mysqli_query($koneksi, "SELECT * FROM kelas WHERE no_kelas='$no_kelas'");
+                        $k = mysqli_fetch_array($kelas);
+                        ?>
+                    <form action="proses_edit_kelas.php" method="POST">
+                    <input type="hidden" name="no_kelas" value="<?= $k['no_kelas']; ?>">
+                        <div class="form-group">
+                        <label for="exampleInputEmail1">Nama Kelas</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Contoh: XII-RPL-1" name="nama_kelas" value="<?= $k['nama_kelas']; ?>" required>
+                        </div>
+                        <div class="form-group">
+                        <label for="exampleInputEmail1">Total Siswa</label>
+                        <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Total Siswa" name="total_siswa" value="<?= $k['total_siswa']; ?>" required>
+                        </div>
+                        <div class="form-group">
+                        <label for="exampleInputEmail1">Wali Kelas</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Wali Kelas" name="wali_kelas" value="<?= $k['wali_kelas']; ?>" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="update">Update Data</button>
+                        <a href="data_kelas.php" class="btn btn-success">Kembali</a>
+                    </form>
+                    </div>
+                </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -272,6 +217,7 @@ $a = mysqli_fetch_array($admin);
             </div>
         </div>
     </div>
+    
     <!-- profil Modal-->
     <div class="modal fade" id="profilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -319,12 +265,13 @@ $a = mysqli_fetch_array($admin);
 
     <!-- Custom scripts for all pages-->
     <script src="../assets/js/sb-admin-2.min.js"></script>
+
     <!-- Page level plugins -->
-    <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../assets/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../assets/js/demo/datatables-demo.js"></script>
+    <script src="../assets/js/demo/chart-area-demo.js"></script>
+    <script src="../assets/js/demo/chart-pie-demo.js"></script>
 
 </body>
 
